@@ -1,2 +1,5 @@
 # -*- coding:utf8 -*-
-from modules.TicTacToe import Game
+from WebTicTacToe import TicTacToeServer
+
+server = TicTacToeServer()
+server.run()
