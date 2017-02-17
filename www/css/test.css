@@ -1,0 +1,8 @@
+h1 {
+  color: red;
+}
+
+h1::after {
+  content: " #css is fine !";
+  color: #33F;
+}
