@@ -13,5 +13,10 @@ def resourceAccess(path, handler, **_):
     if content is None:
         handler.send_error(404)
     else:
-        print(content)
         handler.wfile.write(content)
+
+@Server.addRoute(r"/{meh}/test/{lol}/.*")
+def test(handler, param, **_):
+    handler.wfile.write(param.get('meh', 'EMPTY').encode('utf8'))
+    handler.wfile.write(b' ')
+    handler.wfile.write(param.get('lol', 'EMPTY').encode('utf8'))

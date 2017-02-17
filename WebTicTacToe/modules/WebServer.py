@@ -28,7 +28,7 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
             pathRegex = re.compile("^" + route + "$")
             matches = pathRegex.search(cleanPath)
             if matches is not None:
-                return action(cleanPath, handler=self, matches=matches)
+                return action(param=matches.groupdict(), handler=self, path=cleanPath, matches=matches)
 
         # If nothing has been found...
         self.log_error("No route matching: " + cleanPath)
@@ -87,7 +87,7 @@ class WebServer(object):
             {thing} becomes (?P<thing>\.+)
             """
 
-            def modified(path, *margs, **mkargs):
+            def modified(*margs, **mkargs):
                 """Modified function returned"""
                 handler = mkargs.get('handler', None)
                 retval = None
@@ -98,7 +98,7 @@ class WebServer(object):
                     handler.send_response(code)
 
                     # Run the decorated function
-                    retval = func(path, *margs, **mkargs)
+                    retval = func(*margs, **mkargs)
 
                     # End the headers
                     handler.end_headers()
@@ -119,7 +119,6 @@ class WebServer(object):
     def serveFile(self, path):
         """Tries to serve a file if it exists"""
         realpath = self.getBaseDir() + path
-        print(realpath)
         return open(realpath, 'br') if os.path.isfile(realpath) else None
 
     def serveFileContent(self, path):
