@@ -106,8 +106,8 @@ class WebServer(object):
                 # Finally return the function's result
                 return retval
 
-            bracketsRegex = re.compile(r"{\w+}")
-            formatedRoute = bracketsRegex.sub(r"(?P<\0>.+)", route)
+            bracketsRegex = re.compile(r"{(\w+)}")
+            formatedRoute = bracketsRegex.sub(r"(?P<\1>.+)", route)
             self.handlerClass.Routes[formatedRoute] = func
 
             # decorator -> modifiedFunction
