@@ -4,10 +4,10 @@ import http.server
 import os.path
 import re
 
-__all__ = ['WebServer', 'RouterHandler']
+__all__ = ['WebServer', 'RouteHandler']
 
 # Request handler
-class RouterHandler(http.server.BaseHTTPRequestHandler):
+class RouteHandler(http.server.BaseHTTPRequestHandler):
     """ Original doc:
     https://docs.python.org/3/library/http.server.html#http.server.BaseHTTPRequestHandler
     """
@@ -39,7 +39,7 @@ class RouterHandler(http.server.BaseHTTPRequestHandler):
 
 # Actual server class
 class WebServer(object):
-    def __init__(self, address='localhost', port=80, baseDir='./www', handler=RouterHandler):
+    def __init__(self, address='localhost', port=80, baseDir='./www', handler=RouteHandler):
         self.HttpServer = None
         self.baseDir = baseDir
         self.handlerClass = handler
