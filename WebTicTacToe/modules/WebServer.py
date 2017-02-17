@@ -25,7 +25,7 @@ class RouterHandler(http.server.BaseHTTPRequestHandler):
 
         # Parcour each route's regex
         for route, action in self.Routes.items():
-            pathRegex = re.compile("^" + route)
+            pathRegex = re.compile("^" + route + "$")
             matches = pathRegex.search(cleanPath)
             if matches is not None:
                 return action(cleanPath, handler=self, matches=matches)
@@ -100,15 +100,13 @@ class WebServer(object):
                     # Run the decorated function
                     retval = func(path, *margs, **mkargs)
 
-
-
                     # End the headers
                     handler.end_headers()
 
                 # Finally return the function's result
                 return retval
 
-            bracketsRegex = re.compile(r"{\w*}")
+            bracketsRegex = re.compile(r"{\w+}")
             formatedRoute = bracketsRegex.sub(r"(?P<\0>.+)", route)
             self.handlerClass.Routes[formatedRoute] = func
 
