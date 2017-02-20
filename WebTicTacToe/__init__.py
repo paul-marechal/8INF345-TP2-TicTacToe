@@ -1,2 +1,2 @@
 from .Server import *
-#from .Game import *
+from .Game import *
