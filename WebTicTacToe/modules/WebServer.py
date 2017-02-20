@@ -26,14 +26,6 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
         """Shortcut"""
         self.wfile.flush()
 
-    def serveFile(self, path):
-        """Serves the file"""
-        content = Server.getFileContent(path)
-        if content is None:
-            return content
-        else:
-            self.send_error(404, 'Resource not found')
-
     def serve(self):
         """Generic serving method"""
 
@@ -53,6 +45,9 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
 
                 # Sends the data as returned by the action
                 if data is not None: self.sendData(data)
+
+                # Stop the parcour
+                return
 
         # If nothing has been found...
         self.log_error("No route matching: " + cleanPath)

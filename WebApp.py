@@ -1,5 +1,6 @@
 # -*- coding:utf8 -*-
-from WebTicTacToe import TicTacToeServer
+from WebTicTacToe import Server
+#import WebTicTacToe.Game
 
-TicTacToeServer.initialize()
-TicTacToeServer.run()
+Server.initialize()
+Server.run()
