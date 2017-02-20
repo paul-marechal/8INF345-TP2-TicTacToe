@@ -2,5 +2,5 @@
 from WebTicTacToe import Server
 import WebTicTacToe.Game
 
-Server.initialize()
+Server.initialize(baseDir="./ClientSide")
 Server.run()
