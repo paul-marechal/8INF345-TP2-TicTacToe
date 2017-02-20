@@ -14,6 +14,15 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
 
     Routes = {}
 
+    def sendData(self, data, encoding='utf8'):
+        """Sends data back to the client, and converts string to bytes"""
+        if not isinstance(data, bytes): data = str(data).encode(encoding)
+        self.wfile.write(data)
+
+    def flushData(self):
+        """Shortcut"""
+        self.wfile.flush()
+
     def serve(self):
         """Generic serving method"""
 
@@ -25,10 +34,14 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
 
         # Parcour each route's regex
         for route, action in self.Routes.items():
-            pathRegex = re.compile("^" + route + "$")
-            matches = pathRegex.search(cleanPath)
+            matches = route.search(cleanPath)
             if matches is not None:
-                return action(param=matches.groupdict(), handler=self, path=cleanPath, matches=matches)
+
+                # Execute associated action
+                data = action(param=matches.groupdict(), handler=self, path=cleanPath, matches=matches)
+
+                # Sends the data as returned by the action
+                if data is not None: self.sendData(data)
 
         # If nothing has been found...
         self.log_error("No route matching: " + cleanPath)
@@ -106,9 +119,11 @@ class WebServer(object):
                 # Finally return the function's result
                 return retval
 
+            # Route simplified regex conversion
             bracketsRegex = re.compile(r"{(\w+)}")
             formatedRoute = bracketsRegex.sub(r"(?P<\1>.+)", route)
-            self.handlerClass.Routes[formatedRoute] = func
+            compiledRoute = re.compile("^" + formatedRoute + "$")
+            self.handlerClass.Routes[compiledRoute] = func
 
             # decorator -> modifiedFunction
             return modified
