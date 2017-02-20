@@ -36,18 +36,21 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
             os.path.basename(decodedPath)
 
         # Parcour each route's regex
-        for route, action in self.Routes.items():
+        sortedRoutes = sorted(self.Routes, key=lambda i: self.Routes[i][0])
+        for route in sortedRoutes:
+            action = self.Routes[route]
+
+            # Search for correspondance
             matches = route.search(cleanPath)
             if matches is not None:
 
                 # Execute associated action
-                data = action(param=matches.groupdict(), handler=self, path=cleanPath, matches=matches)
+                data = action[1](param=matches.groupdict(), handler=self, path=cleanPath, matches=matches)
 
                 # Sends the data as returned by the action
-                if data is not None: self.sendData(data)
-
-                # Stop the parcour
-                return
+                if data is not None:
+                    self.sendData(data)
+                    return # Stop the parcour
 
         # If nothing has been found...
         self.log_error("No route matching: " + cleanPath)
@@ -58,6 +61,12 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
 
 # Actual server class
 class WebServer(object):
+
+    DefaultIndexes = [
+        "index.html",
+        "index.htm"
+    ]
+
     def __init__(self, address='localhost', port=80, baseDir='./www', handler=RouteHandler):
         self.HttpServer = None
         self.baseDir = baseDir
@@ -95,7 +104,7 @@ class WebServer(object):
         """Stopping the server"""
         print("Server is shutting down.")
 
-    def addRoute(self, route, code=200):
+    def addRoute(self, route, code=200, index=1):
         """Decorator Generator
         Decorated prototype:
             func(path, handler, matches)"""
@@ -133,7 +142,7 @@ class WebServer(object):
             bracketsRegex = re.compile(r"{(\w+)}")
             formatedRoute = bracketsRegex.sub(r"(?P<\1>.+)", route)
             compiledRoute = re.compile("^" + formatedRoute + "$")
-            self.handlerClass.Routes[compiledRoute] = func
+            self.handlerClass.Routes[compiledRoute] = (index, func)
 
             # decorator -> modifiedFunction
             return modified
