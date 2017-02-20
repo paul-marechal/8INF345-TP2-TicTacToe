@@ -15,7 +15,6 @@ def resourceAccess(path, **_):
 @Server.addRoute(r'.*/', index=float('inf'))
 def defaultFileLookup(path, handler, **_):
     """This should serves files like index or stuff"""
-    content = None
     for f in Server.DefaultIndexes:
         content = Server.getFileContent(path + '/' + f)
         if content is not None:
