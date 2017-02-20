@@ -16,12 +16,23 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
 
     def sendData(self, data, encoding='utf8'):
         """Sends data back to the client, and converts string to bytes"""
-        if not isinstance(data, bytes): data = str(data).encode(encoding)
+        if data is None:
+            return
+        elif not isinstance(data, bytes):
+            data = str(data).encode(encoding)
         self.wfile.write(data)
 
     def flushData(self):
         """Shortcut"""
         self.wfile.flush()
+
+    def serveFile(self, path):
+        """Serves the file"""
+        content = Server.getFileContent(path)
+        if content is None:
+            return content
+        else:
+            self.send_error(404, 'Resource not found')
 
     def serve(self):
         """Generic serving method"""
@@ -45,7 +56,7 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
 
         # If nothing has been found...
         self.log_error("No route matching: " + cleanPath)
-        self.send_error(404, "Not found")
+        self.send_error(404, "Nothing to do")
 
     def do_GET(self): self.serve()
     def do_POST(self): self.serve()
@@ -116,6 +127,10 @@ class WebServer(object):
                     # End the headers
                     handler.end_headers()
 
+                # If no handler is passed (?!)
+                else:
+                    retval = func(*margs, **mkargs)
+
                 # Finally return the function's result
                 return retval
 
@@ -131,15 +146,15 @@ class WebServer(object):
         # addRoute -> decorator
         return decorator
 
-    def serveFile(self, path):
+    def getFile(self, path):
         """Tries to serve a file if it exists"""
         realpath = self.getBaseDir() + path
         return open(realpath, 'br') if os.path.isfile(realpath) else None
 
-    def serveFileContent(self, path):
+    def getFileContent(self, path):
         """Serves the content of a file, if it exists"""
         content = None
-        file = self.serveFile(path)
+        file = self.getFile(path)
         if file is not None:
             content = file.read()
             file.close()
