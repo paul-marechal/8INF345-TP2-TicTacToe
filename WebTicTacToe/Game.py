@@ -3,13 +3,13 @@ from . import Server
 
 games = {'counter': 0}
 
-@Server.addRoute(r"/test/{test}/?")
+@Server.addRoute(r"/test/{test}/")
 def test(param, handler, **kargs):
     return param.get('test')
 
 
 #crée une partie, renvoie son id
-@Server.addRoute(r"/game/create/{username}/?")
+@Server.addRoute(r"/game/create/{username}/")
 def createGame(param, **kargs):
     username = param.get('username')
     grid = {}
@@ -26,7 +26,7 @@ def createGame(param, **kargs):
 
 
 #vérifie si une partie existe encore
-@Server.addRoute(r"/game/exists/{id}/?")
+@Server.addRoute(r"/game/exists/{id}/")
 def gameExists(param, **kargs):
     id = int(param.get('id'))
 
@@ -37,7 +37,7 @@ def gameExists(param, **kargs):
 
 
 #renvoie la liste des parties en attente
-@Server.addRoute(r"/game/list/?")
+@Server.addRoute(r"/game/list/")
 def gameList(**kargs):
     list = {}
 
@@ -51,7 +51,7 @@ def gameList(**kargs):
 #est-ce qu'on devrait pas rajouter le username de celui qui veut rejoindre la partie ?
 #ou est-ce qu'on utilise le username comme celui qui veut rejoindre ?
 #vérifie que l'id et le username correspondent bien à une partie en attente
-@Server.addRoute(r"/game/join/{id}/{username}/?")
+@Server.addRoute(r"/game/join/{id}/{username}/")
 def gameJoin(param, **kargs):
     id = int(param.get('id'))
     username = param.get('username')
@@ -64,7 +64,7 @@ def gameJoin(param, **kargs):
 
 
 #renvoie la grille de jeu
-@Server.addRoute(r"/game/grid/{id}/?")
+@Server.addRoute(r"/game/grid/{id}/")
 def gameGrid(param, **kargs):
     id = int(param.get('id'))
 
@@ -76,7 +76,7 @@ def gameGrid(param, **kargs):
 
 
 #vérifie qu'un coup peut être joué
-@Server.addRoute(r"/game/play/{id}/{username}/{x}/{y}/?")
+@Server.addRoute(r"/game/play/{id}/{username}/{x}/{y}/")
 def gamePlay(param, **kargs):
     id = int(param.get('id'))
     username = param.get('username')
@@ -99,7 +99,7 @@ def gamePlay(param, **kargs):
 
 
 #renvoie le joueur qui doit jouer
-@Server.addRoute(r"/game/turn/{id}/?")
+@Server.addRoute(r"/game/turn/{id}/")
 def gameTurn(param, **kargs):
     id = int(param.get('id'))
 
@@ -113,7 +113,7 @@ def gameTurn(param, **kargs):
 
 
 #vérifie qu'une partie peut être supprimée et la supprime
-@Server.addRoute(r"/game/quit/{id}/{username}/?")
+@Server.addRoute(r"/game/quit/{id}/{username}/")
 def gameQuit(param, **kargs):
     id = int(param.get('id'))
     username = param.get('username')
