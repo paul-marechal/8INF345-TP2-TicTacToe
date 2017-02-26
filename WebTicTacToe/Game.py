@@ -19,7 +19,7 @@ def createGame(param, **kargs):
             grid[i,j] = 0
 
     #si 'turn' est pair c'est au tour du 'player1', sinon 'player2'
-    games[games['counter']] = {'player1': username, 'player2': 'player', 'grid': grid, 'turn': 0}
+    games[games['counter']] = {'player1': username, 'player2': None, 'grid': grid, 'turn': 0}
     games['counter'] += 1
 
     return games['counter'] - 1
