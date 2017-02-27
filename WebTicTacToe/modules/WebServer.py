@@ -2,6 +2,7 @@
 import urllib.parse
 import http.server
 import os.path
+import json
 import re
 
 __all__ = ['WebServer', 'RouteHandler']
@@ -18,6 +19,8 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
         """Sends data back to the client, and converts string to bytes"""
         if data is None:
             return
+        elif isinstance(data, (dict, list)):
+            data = json.dumps(data).encode(encoding)
         elif not isinstance(data, bytes):
             data = str(data).encode(encoding)
         self.wfile.write(data)
