@@ -1,0 +1,46 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+html {
+  background-color: #333;
+  font-family: monospace;
+}
+
+body {
+  min-width: 400px;
+  max-width: 900px;
+  margin: auto;
+
+  background-color: #FFF;
+  padding: 0 10px;
+
+  box-shadow: 0 0 25px black;
+}
+
+h1, h2 {
+
+}
+
+input {
+  border: none;
+  border-bottom: 1px solid #AAA;
+}
+
+input:focus {
+  border-color: #777;
+}
+
+input:hover {
+  border-color: #FA7;
+}
+
+input:invalid {
+  background-color: rgba(255, 0, 0, 0.2);
+}

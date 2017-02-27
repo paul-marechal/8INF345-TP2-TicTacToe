@@ -2,15 +2,32 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Index</title>
-    <link rel="stylesheet" type="text/css" href="css/test.css" />
+    <title>Tic Tac Toe Game</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
   </head>
   <body>
-    <h1>Index !</h1>
-    <p>
-      It seems to work just fine ! <a href=".">test</a>
-    </p>
+    <header>
+      <h1>Tic Tac Toe</h1>
+    </header>
 
-    <script src="js/test.js"></script>
+    <div id="usernamediv">
+      <label for="username">Username:</label>
+      <input id="username" name="username" type="text" required="required"/>
+    </div>
+
+    <div id="gamecreationdiv">
+      <h2>Create game</h2>
+      <button type="submit" id="creategame">Create</button>
+    </div>
+
+    <div id="gamelistdiv">
+      <h2>Join game</h2>
+      <div id="gamelist">
+      </div>
+    </div>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>
