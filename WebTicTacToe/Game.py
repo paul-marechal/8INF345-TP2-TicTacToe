@@ -18,11 +18,13 @@ def createGame(param, **kargs):
         for j in range(3):
             grid[i,j] = 0
 
+    id = games['counter']
     #si 'turn' est pair c'est au tour du 'player1', sinon 'player2'
-    games[games['counter']] = {'player1': username, 'player2': None, 'grid': grid, 'turn': 0}
+    games[id] = {'player1': username, 'player2': None, 'grid': grid, 'turn': 0}
+    
     games['counter'] += 1
 
-    return games['counter'] - 1
+    return id
 
 
 #vérifie si une partie existe encore
