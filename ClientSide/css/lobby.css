@@ -1,0 +1,10 @@
+.game {
+  margin: 0 5px;
+  padding: 5px;
+
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.game:nth-child(2n+1) {
+  background-color: rgba(0, 0, 0, 0.1);
+}
