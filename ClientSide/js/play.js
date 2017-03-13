@@ -1,15 +1,23 @@
 var REFRESH_RATE = 1000;
 
-var STARTED = false;
+var username = Cookies.get('username');
+var game = Cookies.getJSON('game');
 
 function updategrid(id) {
+  var GRID = $('#grid');
   var loading = $('#loading');
   var playarea = $('#playarea');
+
+  playerturn(game.id, function(player) {
+    if (player == username) GRID.attr('disabled', null);
+    else GRID.attr('disabled', true);
+  });
 
   $.getJSON('/game/grid/' + id + '/', function(grid) {
     if (isEmpty(grid)) {
       loading.show();
       playarea.hide();
+
     } else {
       for(i in grid) {
         for(j in grid[i]) {
@@ -30,8 +38,6 @@ function updategrid(id) {
   })
 }
 
-
-
 function refresh(id) {
   gameexists(id, {
     onTrue: function() {
@@ -45,9 +51,7 @@ function refresh(id) {
 }
 
 $(document).ready(function() {
-
-  var username = Cookies.get('username');
-  var game = Cookies.getJSON('game');
+  var grid = $('#grid');
 
   if (!username || isEmpty(game)) {
     alert('you should not be here...');

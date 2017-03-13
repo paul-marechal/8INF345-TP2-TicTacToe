@@ -5,10 +5,13 @@
 
   text-align: center;
   border: 4px solid black;
+  box-shadow: 0 0 10px lawngreen;
+  transition: 0.5s;
 }
 
 #grid[disabled] {
   background-color: : red;
+  box-shadow: 0 0 10px red;
 }
 
 #grid .gridrow .gridcell {

@@ -99,6 +99,12 @@ function creategrid(parentSelector, callback) {
   } // END
 }
 
+function playerturn(id, callback) {
+  $.get('/game/turn/' + id + '/', function(player) {
+    callback(player);
+  })
+}
+
 function isEmpty(object) {
   return Object.keys(object).length === 0 && object.constructor === Object;
 }

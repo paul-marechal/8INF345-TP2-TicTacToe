@@ -80,11 +80,15 @@ def gamePlay(param, **kargs):
             if x >= 0 and x <= 2 and y >= 0 and y <= 2:
                 print('meh')
                 if games[id]['grid'][x][y] == 0:
+
                     if games[id]['player1'] == username and (games[id]['turn'] % 2) == 0:
                         games[id]['grid'][x][y] = 'X'
+                        games[id]['turn'] += 1
+
                     elif games[id]['player2'] == username and (games[id]['turn'] % 2) != 0:
                         games[id]['grid'][x][y] = 'O'
-                    games[id]['turn'] += 1
+                        games[id]['turn'] += 1
+
                     return True
 
     return False
