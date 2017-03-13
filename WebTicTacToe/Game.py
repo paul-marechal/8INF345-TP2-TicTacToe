@@ -3,20 +3,12 @@ from . import Server
 
 games = {'counter': 0}
 
-@Server.addRoute(r"/test/{test}/")
-def test(param, handler, **kargs):
-    return param.get('test')
-
-
 #crée une partie, renvoie son id
 @Server.addRoute(r"/game/create/{username}/")
 def createGame(param, **kargs):
     username = param.get('username')
-    grid = {}
 
-    for i in range(3):
-        for j in range(3):
-            grid[i,j] = 0
+    grid = {i:{j:0 for j in range(3)} for i in range(3)}
 
     id = games['counter']
     #si 'turn' est pair c'est au tour du 'player1', sinon 'player2'
@@ -31,11 +23,7 @@ def createGame(param, **kargs):
 @Server.addRoute(r"/game/exists/{id}/")
 def gameExists(param, **kargs):
     id = int(param.get('id'))
-
-    if id in games:
-        return True
-
-    return False
+    return id in games
 
 
 #renvoie la liste des parties en attente
@@ -90,11 +78,12 @@ def gamePlay(param, **kargs):
         if games[id]['player2'] != None:
             #à vérifier si le joueur choisit une case entre 0 et 2 ou entre 1 et 3
             if x >= 0 and x <= 2 and y >= 0 and y <= 2:
-                if games[id]['grid'][x,y] == 0:
+                print('meh')
+                if games[id]['grid'][x][y] == 0:
                     if games[id]['player1'] == username and (games[id]['turn'] % 2) == 0:
-                        games[id]['grid'][x,y] = 'X'
+                        games[id]['grid'][x][y] = 'X'
                     elif games[id]['player2'] == username and (games[id]['turn'] % 2) != 0:
-                        games[id]['grid'][x,y] = 'O'
+                        games[id]['grid'][x][y] = 'O'
                     games[id]['turn'] += 1
                     return True
 

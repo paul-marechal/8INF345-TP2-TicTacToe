@@ -13,6 +13,12 @@ def resourceAccess(path, **_):
     return Server.getFileContent(path)
 
 # Route seems messy but its fine, really...
+@Server.addRoute(r'.*\.svg', type='image/svg+xml')
+def resourceAccess(path, **_):
+    """CSS thingy"""
+    return Server.getFileContent(path)
+
+# Route seems messy but its fine, really...
 @Server.addRoute(r'.*\.(html?|js|jpg|png|gif)')
 def resourceAccess(path, **_):
     """This first method should serve any resource file"""
