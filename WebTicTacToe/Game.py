@@ -21,7 +21,7 @@ def createGame(param, **kargs):
     id = games['counter']
     #si 'turn' est pair c'est au tour du 'player1', sinon 'player2'
     games[id] = {'player1': username, 'player2': None, 'grid': grid, 'turn': 0}
-    
+
     games['counter'] += 1
 
     return id
@@ -59,7 +59,8 @@ def gameJoin(param, **kargs):
     username = param.get('username')
 
     if id in games:
-        if games[id]['player1'] == username and games[id]['player2'] == None:
+        if games[id]['player2'] == None:
+            games[id]['player2'] = username
             return True
 
     return False

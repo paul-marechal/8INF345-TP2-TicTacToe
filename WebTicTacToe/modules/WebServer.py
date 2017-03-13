@@ -21,8 +21,11 @@ class RouteHandler(http.server.BaseHTTPRequestHandler):
             return
         elif isinstance(data, (dict, list)):
             data = json.dumps(data).encode(encoding)
+            self.send_header('Content-Type', 'text/json')
         elif not isinstance(data, bytes):
             data = str(data).encode(encoding)
+
+        self.end_headers()
         self.wfile.write(data)
 
     def flushData(self):
@@ -107,7 +110,7 @@ class WebServer(object):
         """Stopping the server"""
         print("Server is shutting down.")
 
-    def addRoute(self, route, code=200, index=1):
+    def addRoute(self, route, code=200, index=1, type='text/raw'):
         """Decorator Generator
         Decorated prototype:
             func(path, handler, matches)"""
@@ -128,11 +131,11 @@ class WebServer(object):
                     # Set the response code
                     handler.send_response(code)
 
+                    # Response content type
+                    handler.send_header('Content-Type', type)
+
                     # Run the decorated function
                     retval = func(*margs, **mkargs)
-
-                    # End the headers
-                    handler.end_headers()
 
                 # If no handler is passed (?!)
                 else:
@@ -145,7 +148,7 @@ class WebServer(object):
             bracketsRegex = re.compile(r"{(\w+)}")
             formatedRoute = bracketsRegex.sub(r"(?P<\1>.+)", route)
             compiledRoute = re.compile("^" + formatedRoute + "$")
-            self.handlerClass.Routes[compiledRoute] = (index, func)
+            self.handlerClass.Routes[compiledRoute] = (index, modified)
 
             # decorator -> modifiedFunction
             return modified
